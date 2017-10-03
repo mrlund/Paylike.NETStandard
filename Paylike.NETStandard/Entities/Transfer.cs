@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Paylike.NETCore.Utilities;
+using Paylike.NETStandard.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Text;

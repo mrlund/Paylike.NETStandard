@@ -10,7 +10,7 @@ namespace Paylike.NETStandard
         Task<PaylikeApiResponse<Transaction>> CaptureTransaction(string transactionId, int amount, string currency, string descriptor);
         Task<PaylikeApiResponse<Transaction>> CreateTransaction(string merchantId, string cardId, string descriptor, string currency, decimal amountAsMajor);
         Task<PaylikeApiResponse<Transaction>> CreateTransaction(string merchantId, string cardId, string descriptor, string currency, int amountAsMinor);
-        Task<PaylikeApiResponse<Transfer>> CreateTransfer(Transfer source);
+        Task<PaylikeApiResponse<Transfer>> CreateTransfer(string merchantId, decimal amount, string currencyId, string token);
         Task<PaylikeApiResponse<Card>> GetCardInfo(string cardId);
         Task<PaylikeApiResponse<List<Transaction>>> GetRecentTransactions(string merchantId, int limit);
         Task<PaylikeApiResponse<Card>> SaveCard(string transactionId, string merchantId);

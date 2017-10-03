@@ -107,8 +107,9 @@ namespace Paylike.NETStandard
             }
         }
 
-        public async Task<PaylikeApiResponse<Transfer>> CreateTransfer(Transfer source)
+        public async Task<PaylikeApiResponse<Transfer>> CreateTransfer(string merchantId, decimal amount, string currencyId, string token)
         {
+            Transfer source = new Transfer(merchantId, amount, currencyId, null, token);
             var content = new StringContent(JsonConvert.SerializeObject(source, _jsonSettings), Encoding.UTF8, "application/json");
             using (var req = await _httpClient.PostAsync("transfers", content))
             {

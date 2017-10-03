@@ -9,34 +9,34 @@ namespace Paylike.NETStandard.Entities
 {
     public class Merchant
     {
-        [JsonProperty(\"id\")]
+        [JsonProperty("id")]
         public string Id { get; set; }
 
-        [JsonProperty(\"key\")]
+        [JsonProperty("key")]
         public string Key { get; set; }
 
-        [JsonProperty(\"name\")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty(\"currency\")]
+        [JsonProperty("currency")]
         public string Currency { get; set; }
 
-        [JsonProperty(\"test\")]
+        [JsonProperty("test")]
         public bool Test { get; set; }
 
-        [JsonProperty(\"email\")]
+        [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonProperty(\"website\")]
+        [JsonProperty("website")]
         public string Website { get; set; }
 
-        [JsonProperty(\"descriptor\")]
+        [JsonProperty("descriptor")]
         public string Descriptor { get; set; }
 
-        [JsonProperty(\"company\")]
+        [JsonProperty("company")]
         public Company Company { get; set; }
 
-        [JsonProperty(\"bank\")]
+        [JsonProperty("bank")]
         public Bank Bank { get; set; }
     }
 }

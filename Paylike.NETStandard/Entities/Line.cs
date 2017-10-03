@@ -9,30 +9,30 @@ namespace Paylike.NETStandard.Entities
 {
     public class Line
     {
-        [JsonProperty(\"id\")]
+        [JsonProperty("id")]
         public string Id { get; set; }
-        [JsonProperty(\"created\")]
+        [JsonProperty("created")]
         public DateTime Created { get; set; }
-        [JsonProperty(\"merchantId\")]
+        [JsonProperty("merchantId")]
         public string MerchantId { get; set; }
-        [JsonProperty(\"transactionId\")]
+        [JsonProperty("transactionId")]
         public string TransactionId { get; set; }
-        [JsonProperty(\"amount\")]
+        [JsonProperty("amount")]
         public AmountDto Amount { get; set; }
-        [JsonProperty(\"balance\")]
+        [JsonProperty("balance")]
         public int Balance { get; set; }
-        [JsonProperty(\"capture\")]
+        [JsonProperty("capture")]
         public bool Capture { get; set; }
-        [JsonProperty(\"fee\")]
+        [JsonProperty("fee")]
         public int Fee { get; set; }
 
     }
 
     public class AmountDto
     {
-        [JsonProperty(\"amount\")]
+        [JsonProperty("amount")]
         public int Amount { get; set; }
-        [JsonProperty(\"currency\")]
+        [JsonProperty("currency")]
         public string Currency { get; set; }
     }
 }

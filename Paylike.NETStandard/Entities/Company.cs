@@ -9,10 +9,10 @@ namespace Paylike.NETStandard.Entities
 {
     public class Company
     {
-        [JsonProperty(\"country\")]
+        [JsonProperty("country")]
         public string Country { get; set; }
 
-        [JsonProperty(\"number\", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("number", NullValueHandling = NullValueHandling.Ignore)]
         public string Number { get; set; }
     }
 }

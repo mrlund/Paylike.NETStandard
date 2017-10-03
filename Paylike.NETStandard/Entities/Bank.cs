@@ -9,7 +9,7 @@ namespace Paylike.NETStandard.Entities
 {
     public class Bank
     {
-        [JsonProperty(\"iban\")]
+        [JsonProperty("iban")]
         public string IBAN { get; set; }
     }
 }
