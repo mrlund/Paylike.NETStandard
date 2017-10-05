@@ -117,20 +117,39 @@ namespace Paylike.NETStandard
                 {
                     var transfer = DeserializeAndUnwrap<Transfer>(await req.Content.ReadAsStringAsync());
                     //TODO eliminate extra GET by having Paylike return full transfer object
-                    using (var getReq = await _httpClient.GetAsync($"transfers/{transfer.Id}"))
-                    {
-                        if (req.IsSuccessStatusCode)
-                        {
-                            return new PaylikeApiResponse<Transfer>(DeserializeAndUnwrap<Transfer>(await getReq.Content.ReadAsStringAsync()));
-                        } else
-                        {
-                            return new PaylikeApiResponse<Transfer>(await HandleError(getReq));
-                        }
-                    }
+                    return await GetTransfer(transfer.Id);
                 }
                 return new PaylikeApiResponse<Transfer>(await HandleError(req));
             }
         }
+        public async Task<PaylikeApiResponse<Transfer>> GetTransfer(string transferId)
+        {
+            using (var getReq = await _httpClient.GetAsync($"transfers/{transferId}"))
+            {
+                if (getReq.IsSuccessStatusCode)
+                {
+                    return new PaylikeApiResponse<Transfer>(DeserializeAndUnwrap<Transfer>(await getReq.Content.ReadAsStringAsync()));
+                }
+                else
+                {
+                    return new PaylikeApiResponse<Transfer>(await HandleError(getReq));
+                }
+            }
+        }
+
+        public async Task<PaylikeApiResponse<Transfer>> ApproveTransfer(string transferId)
+        {
+            var content = new StringContent("");
+            using (var req = await _httpClient.PostAsync($"transfers/{transferId}/approvals", content))
+            {
+                if (req.IsSuccessStatusCode)
+                {
+                    return await GetTransfer(transferId);
+                }
+                return new PaylikeApiResponse<Transfer>(await HandleError(req));
+            }
+        }
+
         public async Task<PaylikeApiResponse<List<Transaction>>> GetRecentTransactions(string merchantId, int limit)
         {
             using (var req = await _httpClient.GetAsync($"merchants/{merchantId}/transactions?limit={limit}"))
