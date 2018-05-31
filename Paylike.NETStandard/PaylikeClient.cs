@@ -84,7 +84,7 @@ namespace Paylike.NETStandard
 
         public async Task<PaylikeApiResponse<Card>> SaveCard(string transactionId, string merchantId)
         {
-            var content = new StringContent(JsonConvert.SerializeObject(new { transactionId = transactionId }));
+            var content = new StringContent(JsonConvert.SerializeObject(new { transactionId = transactionId }), Encoding.UTF8, "application/json");
             using (var req = await _httpClient.PostAsync($"merchants/{merchantId}/cards", content))
             {
                 if (req.IsSuccessStatusCode)
