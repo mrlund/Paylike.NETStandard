@@ -15,13 +15,13 @@ namespace Paylike.NETStandard
 {
     public class PaylikeClient : IPaylikeClient
     {
-        private readonly string _privateKey;
+        private string _privateKey;
         private readonly HttpClient _httpClient;
         private readonly JsonSerializer _jsonSerializer;
         private readonly JsonSerializerSettings _jsonSettings;
         private readonly ILogger _logger;
 
-        public PaylikeClient(string privateKey, ILogger<PaylikeClient> logger = null)
+        public PaylikeClient(string privateKey = null, ILogger<PaylikeClient> logger = null)
         {   
             if (logger != null)
             {
@@ -30,7 +30,11 @@ namespace Paylike.NETStandard
             _privateKey = privateKey;
             _httpClient = new HttpClient();
             //_httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes($":{_privateKey}"))}");
+
+            if (privateKey != null)
+            {
+               _httpClient.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes($":{_privateKey}"))}");
+            }
             _httpClient.BaseAddress = new Uri("https://api.paylike.io/");
             _jsonSettings = new JsonSerializerSettings
             {
@@ -42,6 +46,12 @@ namespace Paylike.NETStandard
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 NullValueHandling = NullValueHandling.Ignore
             };
+        }
+        public void SetPrivateKeyForRequests(string privateKey)
+        {
+            _privateKey = privateKey;
+            _httpClient.DefaultRequestHeaders.Remove("Authorization");
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes($":{_privateKey}"))}");
         }
         public async Task<PaylikeApiResponse<Transaction>> CreateTransaction(string merchantId, string cardId, string descriptor, string currency, decimal amountAsMajor)
         {
