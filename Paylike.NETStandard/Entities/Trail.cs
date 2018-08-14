@@ -14,6 +14,7 @@ namespace Paylike.NETStandard.Entities
         public int Balance { get; set; }
         public DateTime Created { get; set; }
         public bool Capture { get; set; }
+        public bool Refund { get; set; }
         public string Descriptor { get; set; }
     }
 }
