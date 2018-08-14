@@ -70,6 +70,23 @@ namespace Paylike.NETStandard
                 return new PaylikeApiResponse<Transaction>(await HandleError(req));
             }
         }
+        public async Task<PaylikeApiResponse<Transaction>> RefundTransaction(string transactionId, string descriptor, string currency, decimal amountAsMajor)
+        {
+            return await RefundTransaction(transactionId, descriptor, amountAsMajor.ToMinorUnits(currency));
+        }
+        public async Task<PaylikeApiResponse<Transaction>> RefundTransaction(string transactionId, string descriptor, int amountAsMinor)
+        {
+            var source = new { descriptor = descriptor, amount = amountAsMinor };
+            var content = new StringContent(JsonConvert.SerializeObject(source, _jsonSettings), Encoding.UTF8, "application/json");
+            using (var req = await _httpClient.PostAsync($"transactions/{transactionId}/refunds", content))
+            {
+                if (req.IsSuccessStatusCode)
+                {
+                    return new PaylikeApiResponse<Transaction>(DeserializeAndUnwrap<Transaction>(await req.Content.ReadAsStringAsync()));
+                }
+                return new PaylikeApiResponse<Transaction>(await HandleError(req));
+            }
+        }
 
         public async Task<PaylikeApiResponse<Transaction>> CaptureTransaction(string transactionId, decimal amount, string currency, string descriptor)
         {
