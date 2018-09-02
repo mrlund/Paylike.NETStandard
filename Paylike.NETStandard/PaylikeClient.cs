@@ -6,6 +6,7 @@ using Paylike.NETStandard.Entities;
 using Paylike.NETStandard.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -67,6 +68,7 @@ namespace Paylike.NETStandard
                 {
                     return new PaylikeApiResponse<Transaction>(DeserializeAndUnwrap<Transaction>(await req.Content.ReadAsStringAsync()));
                 }
+
                 return new PaylikeApiResponse<Transaction>(await HandleError(req));
             }
         }
@@ -200,7 +202,7 @@ namespace Paylike.NETStandard
             {
                 return new ErrorResponse() { code = (int)request.StatusCode, message = request.ReasonPhrase };
             }
-            return JsonConvert.DeserializeObject<ErrorResponse>(errorString, _jsonSettings);
+            return JsonConvert.DeserializeObject<List<ErrorResponse>>(errorString, _jsonSettings).FirstOrDefault();
 
         }
 
