@@ -202,7 +202,14 @@ namespace Paylike.NETStandard
             {
                 return new ErrorResponse() { code = (int)request.StatusCode, message = request.ReasonPhrase };
             }
-            return JsonConvert.DeserializeObject<List<ErrorResponse>>(errorString, _jsonSettings).FirstOrDefault();
+            var token = JToken.Parse(errorString);
+            if (token is JArray)
+            {
+                return JsonConvert.DeserializeObject<List<ErrorResponse>>(errorString, _jsonSettings).FirstOrDefault();
+            } else
+            {
+                return JsonConvert.DeserializeObject<ErrorResponse>(errorString, _jsonSettings);
+            }
 
         }
 
