@@ -151,6 +151,40 @@ namespace Paylike.NETStandard
                 return new PaylikeApiResponse<Transfer>(await HandleError(req));
             }
         }
+        public async Task<PaylikeApiResponse<Payout>> CreatePayout(string merchantId, decimal amount, string currencyId, string descriptor, string bic, string iban)
+        {
+            var postModel = new
+            {
+                amount = amount.ToMinorUnits(currencyId),
+                notify = true,
+                bank = new { bic = bic, iban = iban },
+                descriptor = descriptor
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(postModel, _jsonSettings), Encoding.UTF8, "application/json");
+            using (var req = await _httpClient.PostAsync("merchants/" + merchantId + "/payouts", content))
+            {
+                if (req.IsSuccessStatusCode)
+                {
+                    var payout = DeserializeAndUnwrap<Payout>(await req.Content.ReadAsStringAsync());
+                    return new PaylikeApiResponse<Payout>(payout);
+                }
+                return new PaylikeApiResponse<Payout>(await HandleError(req));
+            }
+        }
+        public async Task<PaylikeApiResponse<Payout>> GetPayout(string merchantId, string payoutId)
+        {
+            using (var getReq = await _httpClient.GetAsync($"merchants/{merchantId}/payouts/{payoutId}"))
+            {
+                if (getReq.IsSuccessStatusCode)
+                {
+                    return new PaylikeApiResponse<Payout>(DeserializeAndUnwrap<Payout>(await getReq.Content.ReadAsStringAsync()));
+                }
+                else
+                {
+                    return new PaylikeApiResponse<Payout>(await HandleError(getReq));
+                }
+            }
+        }
         public async Task<PaylikeApiResponse<Transfer>> GetTransfer(string transferId)
         {
             using (var getReq = await _httpClient.GetAsync($"transfers/{transferId}"))
