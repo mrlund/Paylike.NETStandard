@@ -20,6 +20,10 @@ namespace Paylike.NETStandard.Utilities
         {
             return (decimal)(amount / Math.Pow(10, GetCurrency(currency).Exponent));
         }
+        public static decimal ToMajorUnits(this long amount, string currency)
+        {
+            return (decimal)(amount / Math.Pow(10, GetCurrency(currency).Exponent));
+        }
 
         public static CurrencyData GetCurrency(string Code)
         {
