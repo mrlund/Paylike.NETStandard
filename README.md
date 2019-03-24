@@ -7,6 +7,11 @@ available by the community.
 
 Released under the MIT license: https://opensource.org/licenses/MIT
 
+**Installation**
+`nuget install Paylike.NETStandard`
+-or-
+`dotnet add package Paylike.NETStandard`
+
 **PaylikeClient**
 ```c#
 var client = new PaylikeClient(HttpClient httpClient, string privateKey = null, ILogger<PaylikeClient> logger = null)
