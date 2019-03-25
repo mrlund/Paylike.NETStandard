@@ -114,7 +114,7 @@ namespace Paylike.NETStandard
             {
                 return default(T); 
             }
-            if (typeof(T).GetGenericTypeDefinition() == typeof(List<>))
+            if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(List<>))
             {
                 return JsonConvert.DeserializeObject<T>(json);
             }
