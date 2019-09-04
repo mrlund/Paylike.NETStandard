@@ -36,6 +36,31 @@ namespace Paylike.NETStandard.Tests
             Assert.NotNull(tx);
         }
         [Fact]
+        public async Task CanDeserializeTransactionResponse_When3DSChallengeReturned()
+        {
+            //Example 3DS challenge response from 
+            //https://github.com/paylike/sdk/blob/master/3dsecure/index.md
+            var errorResponse = @"{
+	                                ""code"": 30,
+	                                ""message"": ""3-D Secure is required"",
+	                                ""client"": true,
+	                                ""merchant"": false,
+	                                ""tds"": {
+		                                ""url"": ""https://acs4.3dsecure.no/mdpayacs/pareq"",
+		                                ""pareq"": ""<string pareq>"",
+		                                ""oid"": ""52f77cb2057463e8fa81""
+	                                }
+                                }";
+            var client = new PaylikeClient(new HttpClient(new FakeHttpMessageHandler<Transaction>(true, errorResponse)));
+            var tx = await client.Transactions.Get("");
+            var error = tx.GetError();
+            Assert.NotNull(tx);
+            Assert.False(tx.IsSuccessStatusCode);
+            Assert.NotNull(error);
+            Assert.Equal(30, error.code);
+            Assert.Equal("<string pareq>", error.tds.pareq);
+        }
+        [Fact]
         public async Task CanDeserializeCardResponse()
         {
             var client = new PaylikeClient(new HttpClient(new FakeHttpMessageHandler<Card>()));

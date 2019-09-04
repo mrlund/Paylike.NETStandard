@@ -7,6 +7,8 @@ namespace Paylike.NETStandard
 {
     public class PaylikeApiResponse<T> where T : class
     {
+        private ErrorResponse _errorResponse { get; set; }
+
         public bool IsSuccessStatusCode { get; set; }
         public int? ErrorCode { get; set; }
         public string ErrorMessage { get; set; }
@@ -22,12 +24,18 @@ namespace Paylike.NETStandard
             IsSuccessStatusCode = false;
             ErrorMessage = error?.message;
             ErrorCode = error?.code;
+            _errorResponse = error; 
         }
 
         public PaylikeApiResponse(T source)
         {
             Result = source;
             IsSuccessStatusCode = true; 
+        }
+
+        public ErrorResponse GetError()
+        {
+            return _errorResponse; 
         }
 
 
