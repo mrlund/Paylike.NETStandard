@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Paylike.NETStandard.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,15 @@ namespace Paylike.NETStandard.Tests
     {
         private bool _isError;
         private object source;
-        public FakeHttpMessageHandler(bool isError = false)
+        public FakeHttpMessageHandler(bool isError = false, string responseContentString = null)
         {
             _isError = isError;
-            if (isError)
+            
+            if (!string.IsNullOrEmpty(responseContentString))
+            {
+                source = JsonConvert.DeserializeObject(responseContentString);
+            }
+            else if (isError)
             {
                 source = JObject.FromObject(new ErrorResponse() { message = "Something went wrong!" });
             }
